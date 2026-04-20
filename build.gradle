@@ -1,0 +1,73 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+// All build output (intermediates + ZIP) goes under `build/`.
+
+group = 'com.payments.java'
+version = '1.0.0' // Keep in sync with ZohoPayments.SDK_VERSION
+
+ext {
+    ARTIFACT_ID = 'sdk'
+    zipOutputDir = "${rootDir}/build/${rootProject.name.toUpperCase ()}/output"
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+// Explicitly mark `src/main/java` as the Java source root (and the standard
+// resources / test directories). This ensures both Gradle and IntelliJ pick
+// up `src/main/java` as the source root.
+sourceSets {
+    main {
+        java {
+            setSrcDirs(['src/main/java'])
+        }
+        resources {
+            setSrcDirs(['src/main/resources'])
+        }
+    }
+    test {
+        java {
+            setSrcDirs(['src/test/java'])
+        }
+    }
+}
+
+repositories {
+    mavenCentral ()
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+}
+
+
+// ── Build tasks ─────────────────────────────────────────────────────────────
+task dev {
+    dependsOn 'build'
+    doLast {
+        println "DEV"
+    }
+}
+
+task prodBuild {
+    dependsOn 'build'
+    doLast {
+        println "Product Build"
+    }
+}
+
+prodBuild.dependsOn dev
+
+task cleanFiles {
+    doLast {
+        delete "${rootDir}/build"
+        delete zipOutputDir
+    }
+}
+
+defaultTasks 'dev'
