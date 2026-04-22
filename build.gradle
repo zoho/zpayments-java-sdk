@@ -5,7 +5,7 @@ plugins {
 
 // All build output (intermediates + ZIP) goes under `build/`.
 
-group = 'com.payments.java'
+group = 'com.zohopayments.java'
 version = '1.0.0' // Keep in sync with ZohoPayments.SDK_VERSION
 
 ext {
