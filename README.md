@@ -28,7 +28,7 @@ repositories {
 }
 
 dependencies {
-    implementation "com.payments.java:sdk:1.0.0"
+    implementation "com.zohopayments.java:sdk:1.0.0"
 }
 ```
 
@@ -37,14 +37,14 @@ dependencies {
 ```xml
 <repositories>
     <repository>
-        <id>zpayments-repo</id>
+        <id>zohopayments-repo</id>
         <url>https://static.zohocdn.com/zpayments/</url>
     </repository>
 </repositories>
 
 <dependencies>
     <dependency>
-        <groupId>com.payments.java</groupId>
+        <groupId>com.zohopayments.java</groupId>
         <artifactId>sdk</artifactId>
         <version>1.0.0</version>
     </dependency>
@@ -54,11 +54,11 @@ dependencies {
 ## Quick Start
 
 ```java
-import com.zoho.payments.Edition;
-import com.zoho.payments.ZohoPayments;
-import com.zoho.payments.ZohoPaymentsClient;
-import com.zoho.payments.model.PaymentLink;
-import com.zoho.payments.param.PaymentLinkCreateParams;
+import com.zohopayments.Edition;
+import com.zohopayments.ZohoPayments;
+import com.zohopayments.ZohoPaymentsClient;
+import com.zohopayments.model.PaymentLink;
+import com.zohopayments.param.PaymentLinkCreateParams;
 
 // 1. Build the client
 ZohoPaymentsClient client = ZohoPayments.builder()
@@ -109,7 +109,7 @@ ZohoPaymentsClient client = ZohoPayments.builder()
 The SDK does **not** auto-refresh tokens. Use `ZohoPayments.generateAccessToken()` when the access token expires, then push the new token into the client:
 
 ```java
-import com.zoho.payments.auth.OAuthToken;
+import com.zohopayments.auth.OAuthToken;
 
 OAuthToken fresh = ZohoPayments.generateAccessToken(
         refreshToken, clientId, clientSecret, redirectUri, Edition.IN);
@@ -153,9 +153,9 @@ ZohoPaymentsClient client = ZohoPayments.builder()
 Implement `HttpClientInterface` to use OkHttp, Apache HttpClient, or a test mock:
 
 ```java
-import com.zoho.payments.net.HttpClientInterface;
-import com.zoho.payments.net.ZohoRequest;
-import com.zoho.payments.net.ZohoResponse;
+import com.zohopayments.net.HttpClientInterface;
+import com.zohopayments.net.ZohoRequest;
+import com.zohopayments.net.ZohoResponse;
 
 public class MyHttpClient implements HttpClientInterface {
     @Override
@@ -173,10 +173,10 @@ When a custom transport is set, `connectTimeout` is ignored (your client control
 ### Customers
 
 ```java
-import com.zoho.payments.model.Customer;
-import com.zoho.payments.model.ListResponse;
-import com.zoho.payments.param.CustomerCreateParams;
-import com.zoho.payments.param.CustomerListParams;
+import com.zohopayments.model.Customer;
+import com.zohopayments.model.ListResponse;
+import com.zohopayments.param.CustomerCreateParams;
+import com.zohopayments.param.CustomerListParams;
 
 // Create (all editions)
 Customer customer = client.customers().create(
@@ -199,8 +199,8 @@ client.customers().delete(customer.getCustomerId());
 ### Payment Sessions
 
 ```java
-import com.zoho.payments.model.PaymentSession;
-import com.zoho.payments.param.PaymentSessionCreateParams;
+import com.zohopayments.model.PaymentSession;
+import com.zohopayments.param.PaymentSessionCreateParams;
 
 PaymentSession session = client.paymentSessions().create(
         PaymentSessionCreateParams.builder()
@@ -216,9 +216,9 @@ PaymentSession retrieved = client.paymentSessions().get(session.getPaymentsSessi
 ### Payment Links
 
 ```java
-import com.zoho.payments.model.PaymentLink;
-import com.zoho.payments.param.PaymentLinkCreateParams;
-import com.zoho.payments.param.PaymentLinkUpdateParams;
+import com.zohopayments.model.PaymentLink;
+import com.zohopayments.param.PaymentLinkCreateParams;
+import com.zohopayments.param.PaymentLinkUpdateParams;
 
 // Create
 PaymentLink link = client.paymentLinks().create(
@@ -242,10 +242,10 @@ client.paymentLinks().cancel(link.getPaymentLinkId());
 ### Payments & Refunds
 
 ```java
-import com.zoho.payments.model.Payment;
-import com.zoho.payments.model.PaymentSummary;
-import com.zoho.payments.model.Refund;
-import com.zoho.payments.param.RefundCreateParams;
+import com.zohopayments.model.Payment;
+import com.zohopayments.model.PaymentSummary;
+import com.zohopayments.model.Refund;
+import com.zohopayments.param.RefundCreateParams;
 
 // List payments
 ListResponse<PaymentSummary> payments = client.payments().list();
@@ -278,14 +278,14 @@ List param builders that accept pagination implement `PaginationParams` and expo
 Several create/update operations accept `List<MetaDataParams>` — key/value pairs attached to a resource:
 
 ```java
-import com.zoho.payments.param.MetaDataParams;
+import com.zohopayments.param.MetaDataParams;
 
 List<MetaDataParams> meta = List.of(
         new MetaDataParams("order_id", "ORD-123"),
         new MetaDataParams("source", "mobile-app"));
 ```
 
-On the response side, the same data is exposed as `List<MetaData>` (`com.zoho.payments.model.MetaData`).
+On the response side, the same data is exposed as `List<MetaData>` (`com.zohopayments.model.MetaData`).
 
 **Constraints** (validated client-side): maximum 5 entries, key <= 20 characters, value <= 500 characters.
 
@@ -313,8 +313,7 @@ RuntimeException
 ### Handling API errors
 
 ```java
-import com.zoho.payments.exception.*;
-
+import com.zohopayments.exception.*; 
 try {
     client.payments().get("invalid-id");
 } catch (ResourceNotFoundException e) {
